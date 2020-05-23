@@ -4,6 +4,7 @@
 import 'package:alterfoss/bloc/authentication_bloc/authentication_bloc.dart';
 import 'package:alterfoss/bloc/authentication_bloc/authentication_event.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,28 +57,33 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
 
-  Widget buildBody(BuildContext context) => ListView.builder(
-        itemCount: 4,
-        itemBuilder: (context, index) => Container(
-          padding: EdgeInsets.all(10.0),
-          child: Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  child: Image.asset('images/alter_foss.png'),
+  Widget buildBody(BuildContext context) => Center(
+    child: FractionallySizedBox(
+      widthFactor: kIsWeb ? 0.7 : 1.0,
+      child: ListView.builder(
+            itemCount: 4,
+            itemBuilder: (context, index) => Container(
+              padding: EdgeInsets.all(10.0),
+              child: Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      child: Image.asset('images/alter_foss.png'),
+                    ),
+                    ListTile(
+                      title: Text('Alter FOSS'),
+                      subtitle: Text('Merry Life'),
+                      trailing: Icon(Icons.bubble_chart),
+                      onTap: () {},
+                    ),
+                  ],
                 ),
-                ListTile(
-                  title: Text('Alter FOSS'),
-                  subtitle: Text('Merry Life'),
-                  trailing: Icon(Icons.bubble_chart),
-                  onTap: () {},
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      );
+    ),
+  );
 
   Widget buildDrawer(BuildContext context) => Drawer(
         child: Column(

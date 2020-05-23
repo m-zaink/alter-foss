@@ -2,6 +2,8 @@
 // Created by Mohammed Sadiq on 22/05/20.
 // **
 import 'package:alterfoss/bloc/bloc.dart';
+import 'package:alterfoss/reusable_components/web_aware_body.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,48 +11,51 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: buildBody(context),
     );
   }
 
-  Widget buildBody(BuildContext context) => Container(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Center(
-              child: buildTitle(context),
-            ),
-            SizedBox(height: 10.0),
-            Icon(
-              Icons.bubble_chart,
-              size: 40.0,
-              color: Colors.grey[400],
-            ),
-            SizedBox(height: 20.0),
-            buildCTA(
-              context,
-              title: 'Log In',
-              onPressed: () {
-                BlocProvider.of<AuthenticationBloc>(context)
-                    .add(ClickedOnLogInButtonEvent());
-              },
-              color: Colors.orange,
-            ),
-            SizedBox(height: 20.0),
-            buildCTA(
-              context,
-              title: 'Sign Up',
-              onPressed: () {
-                BlocProvider.of<AuthenticationBloc>(context)
-                    .add(ClickedOnSignUpButtonEvent());
-              },
-              color: Colors.blue,
-            ),
-          ],
+  Widget buildBody(BuildContext context) => WebAwareBody(
+    child: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: buildTitle(context),
+              ),
+              SizedBox(height: 10.0),
+              Icon(
+                Icons.bubble_chart,
+                size: 40.0,
+                color: Colors.grey[400],
+              ),
+              SizedBox(height: 20.0),
+              buildCTA(
+                context,
+                title: 'Log In',
+                onPressed: () {
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .add(ClickedOnLogInButtonEvent());
+                },
+                color: Colors.orange,
+              ),
+              SizedBox(height: 20.0),
+              buildCTA(
+                context,
+                title: 'Sign Up',
+                onPressed: () {
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .add(ClickedOnSignUpButtonEvent());
+                },
+                color: Colors.blue,
+              ),
+            ],
+          ),
         ),
-      );
+  );
 
   Widget buildTitle(BuildContext context) => Text(
         'Alter FOSS',

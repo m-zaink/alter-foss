@@ -4,6 +4,7 @@
 
 import 'package:alterfoss/bloc/authentication_bloc/authentication_bloc.dart';
 import 'package:alterfoss/bloc/bloc.dart';
+import 'package:alterfoss/reusable_components/web_aware_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -45,68 +46,70 @@ class _SignUpScreenState extends State<SignUpScreen> {
       () => BlocProvider.of<AuthenticationBloc>(context)
           .add(OpenAuthenticationScreenEvent());
 
-  Widget buildBody(BuildContext context) => Container(
-        padding: EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Alter Foss',
-                style: TextStyle(fontSize: 20.0),
-              ),
-              TextFormField(
-                decoration: InputDecoration(hintText: 'User Name'),
-                onChanged: (username) => this.username = username,
-                onFieldSubmitted: (_) => onSignUpPressed(),
-                validator: (value) {
-                  if (value.isNotValidUsername)
-                    return 'User name cannot be empty';
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(hintText: 'Email'),
-                onChanged: (email) => this.email = email,
-                onFieldSubmitted: (_) => onSignUpPressed(),
-                validator: (value) {
-                  if (value.isEmpty) return 'Email cannot be empty';
-                  if (value.isNotValidEmail) return 'Invalid email';
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Password',
+  Widget buildBody(BuildContext context) => WebAwareBody(
+    child: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Alter Foss',
+                  style: TextStyle(fontSize: 20.0),
                 ),
-                onChanged: (password) => this.password = password,
-                obscureText: true,
-                onFieldSubmitted: (_) => onSignUpPressed(),
-                validator: (value) {
-                  if (value.isNotValidPassword)
-                    return 'Password should be at least 8 characters long';
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 40.0,
-              ),
-              buildProgressIndicatorOrCTA(context),
-              SizedBox(
-                height: 10.0,
-              ),
-              buildErrorIndicator(context),
-            ],
+                TextFormField(
+                  decoration: InputDecoration(hintText: 'User Name'),
+                  onChanged: (username) => this.username = username,
+                  onFieldSubmitted: (_) => onSignUpPressed(),
+                  validator: (value) {
+                    if (value.isNotValidUsername)
+                      return 'User name cannot be empty';
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(hintText: 'Email'),
+                  onChanged: (email) => this.email = email,
+                  onFieldSubmitted: (_) => onSignUpPressed(),
+                  validator: (value) {
+                    if (value.isEmpty) return 'Email cannot be empty';
+                    if (value.isNotValidEmail) return 'Invalid email';
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                  ),
+                  onChanged: (password) => this.password = password,
+                  obscureText: true,
+                  onFieldSubmitted: (_) => onSignUpPressed(),
+                  validator: (value) {
+                    if (value.isNotValidPassword)
+                      return 'Password should be at least 8 characters long';
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 40.0,
+                ),
+                buildProgressIndicatorOrCTA(context),
+                SizedBox(
+                  height: 10.0,
+                ),
+                buildErrorIndicator(context),
+              ],
+            ),
           ),
         ),
-      );
+  );
 
   Widget buildProgressIndicatorOrCTA(BuildContext context) =>
       BlocBuilder<AuthenticationBloc, AuthenticationState>(
