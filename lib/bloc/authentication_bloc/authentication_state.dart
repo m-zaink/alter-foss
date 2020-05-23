@@ -34,11 +34,6 @@ class HomeScreenState extends AuthenticationState {
   List<Object> get props => [];
 }
 
-class AuthenticationScreenState extends AuthenticationState {
-  @override
-  List<Object> get props => [];
-}
-
 class LogInScreenState extends AuthenticationState {
   @override
   List<Object> get props => [];

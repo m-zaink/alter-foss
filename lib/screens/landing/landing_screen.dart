@@ -3,7 +3,6 @@
 // **
 import 'package:alterfoss/bloc/authentication_bloc/authentication_bloc.dart';
 import 'package:alterfoss/bloc/authentication_bloc/authentication_state.dart';
-import 'package:alterfoss/screens/auth/auth_screen.dart';
 import 'package:alterfoss/screens/home/home_screen.dart';
 import 'package:alterfoss/screens/log_in/log_in_screen.dart';
 import 'package:alterfoss/screens/sign_up/sign_up_screen.dart';
@@ -29,8 +28,6 @@ class LandingScreen extends StatelessWidget {
       return SignUpScreen();
     } else if (logInScreenStates.contains(state.runtimeType)) {
       return LogInScreen();
-    } else if (authenticationScreenStates.contains(state.runtimeType)) {
-      return AuthScreen();
     } else {
       return Center(child: SpinKitThreeBounce(color: Colors.orange));
     }
@@ -49,6 +46,4 @@ class LandingScreen extends StatelessWidget {
         LogInProgressIndicationState,
         LogInErrorState,
       ];
-
-  List<Type> get authenticationScreenStates => [AuthenticationScreenState];
 }

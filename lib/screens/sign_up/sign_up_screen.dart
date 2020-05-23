@@ -42,74 +42,76 @@ class _SignUpScreenState extends State<SignUpScreen> {
         elevation: 0.0,
       );
 
-  VoidCallback get onBackPressed =>
-      () => BlocProvider.of<AuthenticationBloc>(context)
-          .add(OpenAuthenticationScreenEvent());
+  VoidCallback get onBackPressed => () =>
+      BlocProvider.of<AuthenticationBloc>(context).add(OpenLogInScreenEvent());
 
   Widget buildBody(BuildContext context) => WebAwareBody(
-    child: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Alter Foss',
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'User Name'),
-                  onChanged: (username) => this.username = username,
-                  onFieldSubmitted: (_) => onSignUpPressed(),
-                  validator: (value) {
-                    if (value.isNotValidUsername)
-                      return 'User name cannot be empty';
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Email'),
-                  onChanged: (email) => this.email = email,
-                  onFieldSubmitted: (_) => onSignUpPressed(),
-                  validator: (value) {
-                    if (value.isEmpty) return 'Email cannot be empty';
-                    if (value.isNotValidEmail) return 'Invalid email';
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Password',
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Alter FOSS',
+                    style: TextStyle(fontSize: 20.0),
                   ),
-                  onChanged: (password) => this.password = password,
-                  obscureText: true,
-                  onFieldSubmitted: (_) => onSignUpPressed(),
-                  validator: (value) {
-                    if (value.isNotValidPassword)
-                      return 'Password should be at least 8 characters long';
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 40.0,
-                ),
-                buildProgressIndicatorOrCTA(context),
-                SizedBox(
-                  height: 10.0,
-                ),
-                buildErrorIndicator(context),
-              ],
+                  TextFormField(
+                    decoration: InputDecoration(hintText: 'User Name'),
+                    onChanged: (username) => this.username = username,
+                    onFieldSubmitted: (_) => onSignUpPressed(),
+                    validator: (value) {
+                      if (value.isNotValidUsername)
+                        return 'User name cannot be empty';
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(hintText: 'Email'),
+                    onChanged: (email) => this.email = email,
+                    onFieldSubmitted: (_) => onSignUpPressed(),
+                    validator: (value) {
+                      if (value.isEmpty) return 'Email cannot be empty';
+                      if (value.isNotValidEmail) return 'Invalid email';
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                    ),
+                    onChanged: (password) => this.password = password,
+                    obscureText: true,
+                    onFieldSubmitted: (_) => onSignUpPressed(),
+                    validator: (value) {
+                      if (value.isNotValidPassword)
+                        return 'Password should be at least 8 characters long';
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  buildErrorIndicator(context),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  buildProgressIndicatorOrCTA(context),
+                  buildLogInRow(context),
+                ],
+              ),
             ),
           ),
         ),
-  );
+      );
 
   Widget buildProgressIndicatorOrCTA(BuildContext context) =>
       BlocBuilder<AuthenticationBloc, AuthenticationState>(
@@ -164,7 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Text(
                 state.runtimeType == SignUpErrorState
                     ? (state as SignUpErrorState).error
-                    : '',
+                    : 'Something went wrong!',
                 style: TextStyle(
                   color: Colors.redAccent,
                 ),
@@ -173,6 +175,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           visible: state.runtimeType == SignUpErrorState,
         ),
+      );
+
+  Widget buildLogInRow(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            'Already have an account?',
+            style: TextStyle(color: Colors.black),
+          ),
+          FlatButton(
+            splashColor: Colors.white,
+            highlightColor: Colors.white,
+            child: Text(
+              'Log in here!',
+              style: TextStyle(
+                color: Colors.orange,
+              ),
+            ),
+            onPressed: () {
+              BlocProvider.of<AuthenticationBloc>(context).add(
+                ClickedOnLogInButtonEvent(),
+              );
+            },
+          ),
+        ],
       );
 }
 

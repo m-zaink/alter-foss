@@ -19,7 +19,7 @@ class AuthenticationBloc
       if (isUserLoggedIn) {
         yield HomeScreenState(greetings: 'Welcome Back!');
       } else {
-        yield AuthenticationScreenState();
+        yield LogInScreenState();
       }
     }
 
@@ -68,11 +68,11 @@ class AuthenticationBloc
 
     if (event.runtimeType == LogOutEvent) {
       AuthRepository().logout();
-      yield AuthenticationScreenState();
+      yield LogInScreenState();
     }
 
-    if (event.runtimeType == OpenAuthenticationScreenEvent) {
-      yield AuthenticationScreenState();
+    if (event.runtimeType == OpenLogInScreenEvent) {
+      yield LogInScreenState();
     }
   }
 }

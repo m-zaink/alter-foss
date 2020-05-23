@@ -37,69 +37,69 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   Widget buildAppBar(BuildContext context) => AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: onBackPressed,
-        ),
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
         elevation: 0.0,
       );
 
   VoidCallback get onBackPressed =>
       () => BlocProvider.of<AuthenticationBloc>(context)
-          .add(OpenAuthenticationScreenEvent());
+          .add(OpenLogInScreenEvent());
 
   Widget buildBody(BuildContext context) => WebAwareBody(
-    child: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Alter Foss',
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Email'),
-                  onChanged: (email) => this.email = email,
-                  onFieldSubmitted: (_) => onLogInPressed(),
-                  validator: (value) {
-                    if (value.isEmpty) return 'Email cannot be empty';
-                    if (value.isNotValidEmail) return 'Invalid email';
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Password',
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Alter FOSS',
+                    style: TextStyle(fontSize: 20.0),
                   ),
-                  onChanged: (password) => this.password = password,
-                  obscureText: true,
-                  onFieldSubmitted: (_) => onLogInPressed(),
-                  validator: (value) {
-                    if (value.isNotValidPassword)
-                      return 'Password should be at least 8 characters long';
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 40.0,
-                ),
-                buildProgressIndicatorOrCTA(context),
-                SizedBox(
-                  height: 10.0,
-                ),
-                buildErrorIndicator(context),
-              ],
+                  TextFormField(
+                    decoration: InputDecoration(hintText: 'Email'),
+                    onChanged: (email) => this.email = email,
+                    onFieldSubmitted: (_) => onLogInPressed(),
+                    validator: (value) {
+                      if (value.isEmpty) return 'Email cannot be empty';
+                      if (value.isNotValidEmail) return 'Invalid email';
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                    ),
+                    onChanged: (password) => this.password = password,
+                    obscureText: true,
+                    onFieldSubmitted: (_) => onLogInPressed(),
+                    validator: (value) {
+                      if (value.isNotValidPassword)
+                        return 'Password should be at least 8 characters long';
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  buildErrorIndicator(context),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  buildProgressIndicatorOrCTA(context),
+                  buildSignUpRow(context),
+                ],
+              ),
             ),
           ),
         ),
-  );
+      );
 
   Widget buildProgressIndicatorOrCTA(BuildContext context) =>
       BlocBuilder<AuthenticationBloc, AuthenticationState>(
@@ -153,7 +153,7 @@ class _LogInScreenState extends State<LogInScreen> {
               Text(
                 state.runtimeType == LogInErrorState
                     ? (state as LogInErrorState).error
-                    : '',
+                    : 'Something went wrong',
                 style: TextStyle(
                   color: Colors.redAccent,
                 ),
@@ -163,20 +163,41 @@ class _LogInScreenState extends State<LogInScreen> {
           visible: state.runtimeType == LogInErrorState,
         ),
       );
+
+  Widget buildSignUpRow(BuildContext context) => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      Text(
+        'Do not have an account?',
+        style: TextStyle(color: Colors.black),
+      ),
+      FlatButton(
+        splashColor: Colors.white,
+        highlightColor: Colors.white,
+        child: Text(
+          'Sign up here!',
+          style: TextStyle(
+            color: Colors.blue,
+          ),
+        ),
+        onPressed: () {
+          BlocProvider.of<AuthenticationBloc>(context).add(
+            ClickedOnSignUpButtonEvent(),
+          );
+        },
+      ),
+    ],
+  );
 }
 
 extension EmailValidator on String {
-  bool get isValidEmail {
-    return RegExp(
-            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-        .hasMatch(this);
-  }
+  bool get isValidEmail => RegExp(
+          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+      .hasMatch(this);
 
   bool get isNotValidEmail => !isValidEmail;
 
-  bool get isValidPassword {
-    return this.isNotEmpty && this.length >= 8;
-  }
+  bool get isValidPassword => this.isNotEmpty && this.length >= 8;
 
   bool get isNotValidPassword => !isValidPassword;
 }
