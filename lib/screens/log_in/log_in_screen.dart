@@ -22,17 +22,10 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        onBackPressed();
-        return Future.value(
-            false); // Returning false overrides default pop behavior
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: buildAppBar(context),
-        body: buildBody(context),
-      ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: buildAppBar(context),
+      body: buildBody(context),
     );
   }
 
@@ -41,10 +34,6 @@ class _LogInScreenState extends State<LogInScreen> {
         automaticallyImplyLeading: false,
         elevation: 0.0,
       );
-
-  VoidCallback get onBackPressed =>
-      () => BlocProvider.of<AuthenticationBloc>(context)
-          .add(OpenLogInScreenEvent());
 
   Widget buildBody(BuildContext context) => WebAwareBody(
         child: SingleChildScrollView(
